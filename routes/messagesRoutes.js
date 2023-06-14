@@ -11,18 +11,19 @@ const db = mysql.createConnection({
 
 /// Route POST pour poster une BA  ///
 router.post("/api/messages", (req, res) => {
-  const { content, user_id } = req.body;
+  const { title, content, user_id } = req.body;
 
   // Vérifier si le contenu du message et l'ID de l'utilisateur sont présents
-  if (!content || !user_id) {
+  if (!title || !content || !user_id) {
     return res.status(400).json({
       message: "Le contenu du message et l'ID de l'utilisateur sont requis.",
     });
   }
 
   // Requête SQL pour insérer un nouveau message dans la base de données
-  const query = "INSERT INTO messages (content, user_id) VALUES (?, ?)";
-  const values = [content, user_id];
+  const query =
+    "INSERT INTO messages (title, content, user_id) VALUES (?, ?, ?)";
+  const values = [title, content, user_id];
 
   db.query(query, values, (error, result) => {
     if (error) {
@@ -36,6 +37,23 @@ router.post("/api/messages", (req, res) => {
     return res
       .status(201)
       .json({ message: "Le message a été créé avec succès." });
+  });
+});
+///
+
+/// Route GET pour récupérer tout les messages  ///
+router.get("/api/messages", (req, res) => {
+  const query = "SELECT * FROM messages";
+  db.query(query, (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({
+        message:
+          "Une erreur s'est produite lors de la récupération des messages",
+      });
+      return;
+    }
+    res.status(200).json(results);
   });
 });
 ///
