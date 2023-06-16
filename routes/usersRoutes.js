@@ -53,45 +53,19 @@ router.post("/api/users", (req, res) => {
         return;
       }
 
-      // Générer un sel pour le hachage du mail
-      bcrypt.genSalt(10, (err, mailSalt) => {
+      // Requête SQL pour ajouter l'utilisateur avec les champs hachés dans la base de données
+      const sql = "INSERT INTO users (pseudo, mail, password) VALUES (?, ?, ?)";
+      db.query(sql, [pseudo, mail, passwordHash], (err, result) => {
         if (err) {
-          console.error(
-            "Erreur lors de la génération du sel pour le mail :",
-            err
-          );
+          console.error("Erreur lors de l'ajout de l'utilisateur :", err);
           res
             .status(500)
             .json({ error: "Erreur lors de la création du compte" });
           return;
         }
 
-        // Hacher le mail avec le sel généré
-        bcrypt.hash(mail, mailSalt, (err, mailHash) => {
-          if (err) {
-            console.error("Erreur lors du hachage du mail :", err);
-            res
-              .status(500)
-              .json({ error: "Erreur lors de la création du compte" });
-            return;
-          }
-
-          // Requête SQL pour ajouter l'utilisateur avec les champs hachés dans la base de données
-          const sql =
-            "INSERT INTO users (pseudo, mail, password) VALUES (?, ?, ?)";
-          db.query(sql, [pseudo, mailHash, passwordHash], (err, result) => {
-            if (err) {
-              console.error("Erreur lors de l'ajout de l'utilisateur :", err);
-              res
-                .status(500)
-                .json({ error: "Erreur lors de la création du compte" });
-              return;
-            }
-
-            console.log("Utilisateur ajouté avec succès !");
-            res.status(201).json({ message: "Compte créé avec succès." });
-          });
-        });
+        console.log("Utilisateur ajouté avec succès !");
+        res.status(201).json({ message: "Compte créé avec succès." });
       });
     });
   });
@@ -100,19 +74,19 @@ router.post("/api/users", (req, res) => {
 
 ///  Route pour le login d'un utilisateur  ///
 router.post("/api/login", (req, res) => {
-  const { pseudo, password } = req.body;
+  const { mail, password } = req.body;
 
-  // Vérifier si les champs pseudo et mot de passe sont fournis
-  if (!pseudo || !password) {
-    res
-      .status(400)
-      .json({ error: "Veuillez fournir un pseudo et un mot de passe." });
+  // Vérifier si les champs mail et mot de passe sont fournis
+  if (!mail || !password) {
+    res.status(400).json({
+      error: "Veuillez fournir une adresse email et un mot de passe.",
+    });
     return;
   }
 
-  // Rechercher l'utilisateur dans la base de données par pseudo
-  const sql = "SELECT * FROM users WHERE pseudo = ?";
-  db.query(sql, [pseudo], (err, results) => {
+  // Rechercher l'utilisateur dans la base de données par mail
+  const sql = "SELECT * FROM users WHERE mail = ?";
+  db.query(sql, [mail], (err, results) => {
     if (err) {
       console.error("Erreur lors de la recherche de l'utilisateur :", err);
       res.status(500).json({ error: "Erreur lors de la connexion" });
@@ -121,7 +95,7 @@ router.post("/api/login", (req, res) => {
 
     // Vérifier si l'utilisateur existe
     if (results.length === 0) {
-      res.status(401).json({ error: "Pseudo ou mot de passe incorrect." });
+      res.status(401).json({ error: "Email ou mot de passe incorrect." });
       return;
     }
 
@@ -136,7 +110,7 @@ router.post("/api/login", (req, res) => {
       }
 
       if (!isMatch) {
-        res.status(401).json({ error: "Pseudo ou mot de passe incorrect." });
+        res.status(401).json({ error: "Email ou mot de passe incorrect." });
         return;
       }
 
@@ -145,8 +119,12 @@ router.post("/api/login", (req, res) => {
         expiresIn: "4h",
       });
 
-      res.status(200).json({ token });
-      console.log(`Utilisateur ${pseudo} connecté`);
+      res.status(200).json({
+        pseudo: user.pseudo,
+        id: user.id,
+        token,
+      });
+      console.log(`Utilisateur connecté`);
     });
   });
 });
