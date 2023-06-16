@@ -19,6 +19,14 @@ router.post("/api/users", (req, res) => {
   const { pseudo, mail, password } = req.body;
   const role = "member";
 
+  // Vérifier que pseudo, mail et password sont renseignés
+  if (!pseudo || !mail || !password) {
+    res
+      .status(400)
+      .json({ error: "Veuillez renseigner tous les champs requis." });
+    return;
+  }
+
   // Vérifier que le mot de passe a au moins 8 caractères, avec au moins un chiffre et une majuscule
   const passwordRegex = /^(?=.*\d)(?=.*[A-Z]).{8,}$/;
   if (!passwordRegex.test(password)) {
