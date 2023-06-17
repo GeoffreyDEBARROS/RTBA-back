@@ -239,44 +239,19 @@ router.put("/api/users/:userId", (req, res) => {
     }
 
     if (mail) {
-      // Générer un nouveau sel pour le hachage du mail
-      bcrypt.genSalt(10, (err, mailSalt) => {
+      // Mettre à jour le mail dans la base de données
+      const updateMailQuery = "UPDATE users SET mail = ? WHERE id = ?";
+      db.query(updateMailQuery, [mail, userId], (err, result) => {
         if (err) {
-          console.error(
-            "Erreur lors de la génération du sel pour le mail :",
-            err
-          );
+          console.error("Erreur lors de la mise à jour du mail :", err);
           res
             .status(500)
             .json({ error: "Erreur lors de la modification du compte" });
           return;
         }
 
-        // Hacher le nouveau mail avec le sel généré
-        bcrypt.hash(mail, mailSalt, (err, mailHash) => {
-          if (err) {
-            console.error("Erreur lors du hachage du mail :", err);
-            res
-              .status(500)
-              .json({ error: "Erreur lors de la modification du compte" });
-            return;
-          }
-
-          // Mettre à jour le mail dans la base de données
-          const updateMailQuery = "UPDATE users SET mail = ? WHERE id = ?";
-          db.query(updateMailQuery, [mailHash, userId], (err, result) => {
-            if (err) {
-              console.error("Erreur lors de la mise à jour du mail :", err);
-              res
-                .status(500)
-                .json({ error: "Erreur lors de la modification du compte" });
-              return;
-            }
-
-            console.log("Mail mis à jour avec succès !");
-            res.status(200).json({ message: "Mail mis à jour avec succès." });
-          });
-        });
+        console.log("Mail mis à jour avec succès !");
+        res.status(200).json({ message: "Mail mis à jour avec succès." });
       });
     }
 
