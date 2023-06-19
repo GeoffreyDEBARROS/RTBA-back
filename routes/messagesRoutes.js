@@ -11,19 +11,19 @@ const db = mysql.createConnection({
 
 /// Route POST pour poster une BA  ///
 router.post("/api/messages", (req, res) => {
-  const { title, content, user_id } = req.body;
+  const { title, pseudo, created_at, content } = req.body;
 
   // Vérifier si le contenu du message et l'ID de l'utilisateur sont présents
-  if (!title || !content || !user_id) {
+  if (!title || !pseudo || !created_at || !content) {
     return res.status(400).json({
-      message: "Le contenu du message et l'ID de l'utilisateur sont requis.",
+      message: "Tous les champs doivent être remplis",
     });
   }
 
   // Requête SQL pour insérer un nouveau message dans la base de données
   const query =
-    "INSERT INTO messages (title, content, user_id) VALUES (?, ?, ?)";
-  const values = [title, content, user_id];
+    "INSERT INTO messages (title, pseudo, created_at, content) VALUES (?, ?, ?, ?)";
+  const values = [title, pseudo, created_at, content];
 
   db.query(query, values, (error, result) => {
     if (error) {
