@@ -2,12 +2,16 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
 
-const db = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "ROOT",
-  database: "raconte_ta_ba",
-});
+// const db = mysql.createConnection({
+//   host: "127.0.0.1",
+//   user: "root",
+//   password: "ROOT",
+//   database: "raconte_ta_ba",
+// });
+
+const urlDB = process.env.RAILWAY_URL;
+
+const db = mysql.createConnection(urlDB);
 
 /// Route POST pour poster un commentaire  ///
 router.post("/api/comments", (req, res) => {
@@ -22,7 +26,8 @@ router.post("/api/comments", (req, res) => {
   }
 
   // Requête SQL pour insérer un nouveau message dans la base de données
-  const query = "INSERT INTO comments (content, user_id, message_id) VALUES (?, ?, ?)";
+  const query =
+    "INSERT INTO comments (content, user_id, message_id) VALUES (?, ?, ?)";
   const values = [content, user_id, message_id];
 
   db.query(query, values, (error, result) => {
@@ -52,7 +57,8 @@ router.delete("/api/comments/:id", (req, res) => {
     if (error) {
       console.error("Erreur lors de la suppression du commentaire :", error);
       return res.status(500).json({
-        message: "Une erreur est survenue lors de la suppression du commentaire.",
+        message:
+          "Une erreur est survenue lors de la suppression du commentaire.",
       });
     }
 
