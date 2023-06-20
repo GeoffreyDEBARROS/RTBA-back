@@ -32,14 +32,15 @@ const db = mysql.createConnection(urlDB);
 // });
 
 // Connecter à la base de données
-db.connect((err) => {
-  if (err) {
-    console.error("Erreur de connexion à la base de données :", err);
-    return;
-  }
-  console.log("Connecté à la base de données MySQL.");
-});
 
-app.listen(port, () => {
-  console.log(`Serveur démarré sur le port ${port}`);
-});
+// db.connect((err) => {
+//   if (err) {
+//     console.error("Erreur de connexion à la base de données :", err);
+//     return;
+//   }
+//   console.log("Connecté à la base de données MySQL.");
+// });
+
+// app.listen(port, () => {
+//   console.log(`Serveur démarré sur le port ${port}`);
+// });
