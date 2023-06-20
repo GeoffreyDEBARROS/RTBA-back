@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(usersRouter);
 app.use(messagesRouter);
-app.use(commentsRouter);
+app.use(commentsRouter); 
 
 const urlDB = process.env.RAILWAY_URL;
 
