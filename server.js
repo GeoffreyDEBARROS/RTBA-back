@@ -20,9 +20,9 @@ app.use(usersRouter);
 app.use(messagesRouter);
 app.use(commentsRouter);
 
-const db = process.env.RAILWAY_URL;
+const urlDB = process.env.RAILWAY_URL;
 
-const connection = mysql.createConnection(db);
+const db = mysql.createConnection(urlDB);
 
 // const db = mysql.createConnection({
 //   host: "127.0.0.1",
