@@ -20,16 +20,15 @@ app.use(usersRouter);
 app.use(messagesRouter);
 app.use(commentsRouter);
 
-// const urlDB = process.env.RAILWAY_URL;
+const urlDB = process.env.RAILWAY_URL;
 
-// const db = mysql.createConnection(urlDB);
+app.use(
+  cors({
+    origin: "https://stellular-kringle-dc0805.netlify.app",
+  })
+);
 
-const db = mysql.createConnection({
-  host: "containers-us-west-56.railway.app",
-  user: "root",
-  password: "HvWPRZf4g4IoPGFZ1Fee",
-  database: "railway",
-});
+const db = mysql.createConnection(urlDB);
 
 // const db = mysql.createConnection({
 //   host: "127.0.0.1",
