@@ -4,6 +4,7 @@ const mysql = require("mysql");
 const usersRouter = require("./routes/usersRoutes");
 const messagesRouter = require("./routes/messagesRoutes");
 const commentsRouter = require("./routes/commentsRoutes");
+require("dotenv").config();
 
 const bodyParser = require("body-parser");
 
@@ -19,12 +20,16 @@ app.use(usersRouter);
 app.use(messagesRouter);
 app.use(commentsRouter);
 
-const db = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "ROOT",
-  database: "raconte_ta_ba",
-});
+const db = process.env.RAILWAY_URL;
+
+const connection = mysql.createConnection(db);
+
+// const db = mysql.createConnection({
+//   host: "127.0.0.1",
+//   user: "root",
+//   password: "ROOT",
+//   database: "raconte_ta_ba",
+// });
 
 // Connecter à la base de données
 db.connect((err) => {
