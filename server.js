@@ -25,6 +25,7 @@ const urlDB = process.env.RAILWAY_URL;
 app.use(
   cors({
     origin: "https://stellular-kringle-dc0805.netlify.app",
+    credentials: true,
   })
 );
 
