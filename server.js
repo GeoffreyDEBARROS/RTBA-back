@@ -22,18 +22,12 @@ app.use(commentsRouter);
 
 const urlDB = process.env.RAILWAY_URL;
 
-const whitelist = ["https://stellular-kringle-dc0805.netlify.app"];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: "",
+    credentials: true,
+  })
+);
 
 const db = mysql.createConnection(urlDB);
 
