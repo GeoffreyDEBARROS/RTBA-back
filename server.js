@@ -11,7 +11,7 @@ const bodyParser = require("body-parser");
 const port = 3001;
 const app = express();
 
-// app.use(cors());
+app.use(cors());
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,23 +20,13 @@ app.use(usersRouter);
 app.use(messagesRouter);
 app.use(commentsRouter);
 
-const urlDB = process.env.RAILWAY_URL;
 
-app.use(
-  cors({
-    origin: "",
-    credentials: true,
-  })
-);
-
-const db = mysql.createConnection(urlDB);
-
-// const db = mysql.createConnection({
-//   host: "127.0.0.1",
-//   user: "root",
-//   password: "ROOT",
-//   database: "raconte_ta_ba",
-// });
+const db = mysql.createConnection({
+  host: "127.0.0.1",
+  user: "root",
+  password: "ROOT",
+  database: "raconte_ta_ba",
+});
 
 // Connecter à la base de données
 db.connect((err) => {
