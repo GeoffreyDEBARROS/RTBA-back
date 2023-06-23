@@ -3,9 +3,10 @@ const router = express.Router();
 const mysql = require("mysql");
 
 const db = mysql.createConnection({
-  host: "127.0.0.1",
+  host: "dpg-ciamvi15rnupq1p4q0j0-a",
+  port : 5432,
   user: "root",
-  password: "ROOT",
+  password: "7NmBvXv9b9Vt2KD77IV7N3IFPf4OXS8G",
   database: "raconte_ta_ba",
 });
 
