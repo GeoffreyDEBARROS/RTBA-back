@@ -2,12 +2,16 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
 
-const db = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "ROOT",
-  database: "raconte_ta_ba",
-});
+// const db = mysql.createConnection({
+//   host: "127.0.0.1",
+//   user: "root",
+//   password: "ROOT",
+//   database: "raconte_ta_ba",
+// });
+
+const urlDB = process.env.RAILWAY_URL;
+
+const db = mysql.createConnection(urlDB);
 
 /// Route POST pour poster une BA  ///
 router.post("/api/messages", (req, res) => {

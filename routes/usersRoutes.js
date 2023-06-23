@@ -7,12 +7,17 @@ require("dotenv").config();
 
 const secretKey = process.env.SECRET_KEY;
 
-const db = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "ROOT",
-  database: "raconte_ta_ba",
-});
+// const db = mysql.createConnection({
+//   host: "127.0.0.1",
+//   user: "root", 
+//   password: "ROOT",
+//   database: "raconte_ta_ba",
+// });
+
+const urlDB = process.env.RAILWAY_URL;
+
+const db = mysql.createConnection(urlDB);
+
 
 ///   Route POST pour ajouter un utilisateur dans la base de données   ///
 router.post("/api/users", (req, res) => {
