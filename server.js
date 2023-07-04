@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const bodyParser = require("body-parser");
 
-const port = 5432;
+const port = 3001;
 const app = express();
 
 app.use(cors());
@@ -22,10 +22,9 @@ app.use(commentsRouter);
 
 
 const db = mysql.createConnection({
-  host: "dpg-ciamvi15rnupq1p4q0j0-a",
-  port : 5432,
+  host: "127.0.0.1",
   user: "root",
-  password: "7NmBvXv9b9Vt2KD77IV7N3IFPf4OXS8G",
+  password: "ROOT",
   database: "raconte_ta_ba",
 });
 
