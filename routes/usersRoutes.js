@@ -9,11 +9,10 @@ const secretKey = process.env.SECRET_KEY;
 
 const db = mysql.createConnection({
   host: "127.0.0.1",
-  user: "root", 
+  user: "root",
   password: "ROOT",
   database: "raconte_ta_ba",
 });
-
 
 ///   Route POST pour ajouter un utilisateur dans la base de données   ///
 router.post("/api/users", (req, res) => {
@@ -123,6 +122,7 @@ router.post("/api/login", (req, res) => {
       res.status(200).json({
         pseudo: user.pseudo,
         id: user.id,
+        role: user.role,
         token,
       });
       console.log(`Utilisateur connecté`);
