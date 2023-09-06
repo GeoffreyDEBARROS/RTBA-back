@@ -104,4 +104,20 @@ router.delete("/api/messages/:id", (req, res) => {
 });
 ///
 
+/// Route update pour ajouter un like au message ///
+router.put("/api/messages/:messageId/like", (req, res) => {
+  const messageId = req.params.messageId;
+
+  const incrementLikesQuery = "UPDATE messages SET likes_count = likes_count + 1 WHERE id = ?";
+  
+  db.query(incrementLikesQuery, [messageId], (err, results) => {
+    if (err) {
+      console.error("Erreur lors de l'incrémentation des likes : " + err.message);
+      res.status(500).json({ error: "Erreur lors de l'incrémentation des likes." });
+    } else {
+      res.status(200).json({ message: "Like ajouté avec succès." });
+    }
+  });
+});
+
 module.exports = router;
