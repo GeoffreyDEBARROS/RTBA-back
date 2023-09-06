@@ -58,6 +58,24 @@ router.get("/api/messages", (req, res) => {
 });
 ///
 
+/// Route GET pour récupérer les messages d'un utilisateur ///
+router.get("/api/messages/:pseudo", (req, res) => {
+  const userPseudo = req.params.pseudo;
+  const query = "SELECT * FROM messages WHERE pseudo = ? ";
+  db.query(query, [userPseudo], (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({
+        message:
+          "Une erreur s'est produite lors de la récupération des messages",
+      });
+      return;
+    }
+    res.status(200).json(results);
+  });
+});
+///
+
 /// Route DELETE pour supprimer un message  ///
 router.delete("/api/messages/:id", (req, res) => {
   const messageId = req.params.id;

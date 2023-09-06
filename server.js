@@ -1,6 +1,6 @@
 const express = require("express");
-const cors = require("cors");
 const mysql = require("mysql");
+const cors = require("cors");
 const usersRouter = require("./routes/usersRoutes");
 const messagesRouter = require("./routes/messagesRoutes");
 const commentsRouter = require("./routes/commentsRoutes");
