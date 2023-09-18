@@ -1,6 +1,8 @@
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const usersRouter = require("./routes/usersRoutes");
 const messagesRouter = require("./routes/messagesRoutes");
 const commentsRouter = require("./routes/commentsRoutes");
@@ -11,7 +13,25 @@ const bodyParser = require("body-parser");
 const port = 3001;
 const app = express();
 
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'"],
+      imgSrc: ["'self'"],
+    },
+  })
+);
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+});
+
 app.use(cors());
+app.use(helmet());
+app.use(limiter());
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,12 +40,11 @@ app.use(usersRouter);
 app.use(messagesRouter);
 app.use(commentsRouter);
 
-
 const db = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "ROOT",
-  database: "raconte_ta_ba",
+  database: "rtba",
 });
 
 // Connecter à la base de données

@@ -6,7 +6,7 @@ const db = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "ROOT",
-  database: "raconte_ta_ba",
+  database: "rtba",
 });
 
 /// Route POST pour poster un commentaire  ///

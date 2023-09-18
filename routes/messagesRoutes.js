@@ -6,7 +6,7 @@ const db = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "ROOT",
-  database: "raconte_ta_ba",
+  database: "rtba",
 });
 
 /// Route POST pour poster une BA  ///
@@ -108,12 +108,17 @@ router.delete("/api/messages/:id", (req, res) => {
 router.put("/api/messages/:messageId/like", (req, res) => {
   const messageId = req.params.messageId;
 
-  const incrementLikesQuery = "UPDATE messages SET likes_count = likes_count + 1 WHERE id = ?";
-  
+  const incrementLikesQuery =
+    "UPDATE messages SET likes_count = likes_count + 1 WHERE id = ?";
+
   db.query(incrementLikesQuery, [messageId], (err, results) => {
     if (err) {
-      console.error("Erreur lors de l'incrémentation des likes : " + err.message);
-      res.status(500).json({ error: "Erreur lors de l'incrémentation des likes." });
+      console.error(
+        "Erreur lors de l'incrémentation des likes : " + err.message
+      );
+      res
+        .status(500)
+        .json({ error: "Erreur lors de l'incrémentation des likes." });
     } else {
       res.status(200).json({ message: "Like ajouté avec succès." });
     }
