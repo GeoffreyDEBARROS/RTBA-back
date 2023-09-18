@@ -6,12 +6,13 @@ const rateLimit = require("express-rate-limit");
 const usersRouter = require("./routes/usersRoutes");
 const messagesRouter = require("./routes/messagesRoutes");
 const commentsRouter = require("./routes/commentsRoutes");
-require("dotenv").config();
-
 const bodyParser = require("body-parser");
+require("dotenv").config();
 
 const port = 3001;
 const app = express();
+app.use(cors());
+app.use(helmet());
 
 app.use(
   helmet.contentSecurityPolicy({
@@ -26,12 +27,9 @@ app.use(
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 15,
 });
-
-app.use(cors());
-app.use(helmet());
-app.use(limiter());
+app.use("/api/users", limiter);
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
